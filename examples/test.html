@@ -24,7 +24,7 @@
 		
 		$('#out').empty().html(text);
 		
-		oembed(document.selectorQuery(".oembed"), null,{
+		oembed(document.querySelector(".oembed"), null,{
 			apikeys: {
 				//etsy : 'd0jq4lmfi5bjbrxq2etulmjr',
 				amazon : 'caterwall-20',
@@ -45,7 +45,7 @@
 <textarea id="info" style="width:80%; margin-right:auto; margin-left: auto; height:200px;">
 </textarea>
 <hr/>
-<div id="out"></div>
+<div id="out" class="oembed"></div>
 
 </body>
 </html>

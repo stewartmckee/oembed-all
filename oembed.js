@@ -47,7 +47,7 @@ var on = require('emmy/on');
         var embedData = q('#jqoembeddata');
         if (embedData) document.body.appendChild(embedData);
 
-        elements.forEach(function (element) {
+        [].forEach.call(elements, function (element) {
             var resourceURL = (url && (!url.indexOf('http://') || !url.indexOf('https://'))) ? url : container.attr("href"),
                 provider;
 
