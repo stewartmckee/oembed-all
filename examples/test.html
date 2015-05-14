@@ -1,7 +1,7 @@
 <html>
 <head>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>
-<script type="text/javascript" src="../jquery.oembed.js"></script>
+<script type="text/javascript" src="../build.js"></script>
 <link rel="stylesheet" type="text/css" href="../jquery.oembed.css"> 
 
 
@@ -24,7 +24,7 @@
 		
 		$('#out').empty().html(text);
 		
-		$(".oembed").oembed(null,{
+		oembed(document.selectorQuery(".oembed"), null,{
 			apikeys: {
 				//etsy : 'd0jq4lmfi5bjbrxq2etulmjr',
 				amazon : 'caterwall-20',
