@@ -2,12 +2,12 @@
   "name": "jquery-oembed-all",
   "version": "1.0.0",
   "description": "Jquery-Oembed-All =================",
-  "main": "jquery.oembed.js",
+  "main": "oembed.js",
   "directories": {
     "example": "examples"
   },
   "scripts": {
-    "build": "browserify jquery.oembed.js -o build.js",
+    "build": "browserify oembed.js -o build.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
