@@ -1,3 +1,4 @@
 # Created by .gitignore support plugin (hsz.mobi)
 *.iml
+build.js
 .DS_Store
