@@ -153,6 +153,7 @@ extend(Oembed.prototype, {
 			embedMethod = 'replace';
 		}
 
+		//TODO: change this switch construction to more readable state
 		switch (embedMethod) {
 			case "replace":
 				if (oembedData.code instanceof Element) {
@@ -163,13 +164,17 @@ extend(Oembed.prototype, {
 				container.parentNode.removeChild(container);
 				break;
 			case "fill":
-				container.innerHTML = oembedData.code;
+				if (oembedData.code instanceof Element) {
+					container.appendChild(oembedData.code);
+				} else {
+					container.innerHTML = oembedData.code;
+				}
 				break;
 			case "append":
 				var containerWrap = domify('<div class="oembedall-container"></div>');
 				container.parentNode.appendChild(containerWrap);
 				containerWrap.appendChild(container);
-				var oembedContainer = container.parentNode;
+				var oembedContainer = containerWrap;
 				if (self.settings.includeHandle) {
 					var closehide = domify('<span class="oembedall-closehide">&darr;</span>');
 					container.parentNode.insertBefore(closehide, container);

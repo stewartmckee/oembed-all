@@ -4364,18 +4364,28 @@ extend(Oembed.prototype, {
 			embedMethod = 'replace';
 		}
 
+		//TODO: change this switch construction to more readable state
 		switch (embedMethod) {
 			case "replace":
-				container.replaceWith(oembedData.code);
+				if (oembedData.code instanceof Element) {
+					container.parentNode.insertBefore(oembedData.code, container);
+				} else {
+					container.parentNode.insertBefore(domify(oembedData.code), container);
+				}
+				container.parentNode.removeChild(container);
 				break;
 			case "fill":
-				container.html(oembedData.code);
+				if (oembedData.code instanceof Element) {
+					container.append(oembedData.code);
+				} else {
+					container.innerHTML = oembedData.code;
+				}
 				break;
 			case "append":
 				var containerWrap = domify('<div class="oembedall-container"></div>');
 				container.parentNode.appendChild(containerWrap);
 				containerWrap.appendChild(container);
-				var oembedContainer = container.parentNode;
+				var oembedContainer = containerWrap;
 				if (self.settings.includeHandle) {
 					var closehide = domify('<span class="oembedall-closehide">&darr;</span>');
 					container.parentNode.insertBefore(closehide, container);
