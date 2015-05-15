@@ -24,11 +24,18 @@ Quick Start
 -----------
 
 You can connect it using Browserify:
+
+````
+npm install oembed-js --save
+````
+
 ````
 var Oembed = require('oembed-js');
 ````
-or connect oembed-build.js and write the same thing to get the function.
+
+or connect `oembed-build.js` and write the same thing to get the function.
 Then you can call it like that:
+
 ````
 var link = document.querySelector('a.embed');
 new Oembed(link);
