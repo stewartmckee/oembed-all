@@ -155,10 +155,15 @@ extend(Oembed.prototype, {
 
 		switch (embedMethod) {
 			case "replace":
-				container.replaceWith(oembedData.code);
+				if (oembedData.code instanceof Element) {
+					container.parentNode.insertBefore(oembedData.code, container);
+				} else {
+					container.parentNode.insertBefore(domify(oembedData.code), container);
+				}
+				container.parentNode.removeChild(container);
 				break;
 			case "fill":
-				container.html(oembedData.code);
+				container.innerHTML = oembedData.code;
 				break;
 			case "append":
 				var containerWrap = domify('<div class="oembedall-container"></div>');
