@@ -33,12 +33,9 @@ function Oembed(elements, url, options, embedAction) {
 		includeHandle: true,
 		embedMethod: 'auto',
 		// "auto", "append", "fill"
-		onProviderNotFound: function() {
-		},
-		beforeEmbed: function() {
-		},
-		afterEmbed: function() {
-		},
+		onProviderNotFound: function() {},
+		beforeEmbed: function() {},
+		afterEmbed: function() {},
 		onEmbed: false,
 		onError: function(a, b, c, d) {
 			console.log('err:', a, b, c, d)
@@ -54,7 +51,7 @@ function Oembed(elements, url, options, embedAction) {
 	//the instance's data storage element
 	this.data = {};
 
-	//single/multiple element check
+	//single/multiple element call
 	if (elements instanceof Element) {
 		this.embedElement(elements);
 	} else {
