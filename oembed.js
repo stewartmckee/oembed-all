@@ -64,9 +64,9 @@ function Oembed(elements, url, options, embedAction) {
 
 };
 
-Oembed.providers = providers;
-
 extend(Oembed.prototype, {
+
+	providers: providers,
 
 	embedElement: function(element) {
 		var self = this;
@@ -253,12 +253,12 @@ extend(Oembed.prototype, {
 	},
 
 	getOEmbedProvider: function(url) {
-		for (var i = 0; i < Oembed.providers.length; i++) {
-			for (var j = 0, l = Oembed.providers[i].urlschemes.length; j < l; j++) {
-				var regExp = new RegExp(Oembed.providers[i].urlschemes[j], "i");
+		for (var i = 0; i < this.providers.length; i++) {
+			for (var j = 0, l = this.providers[i].urlschemes.length; j < l; j++) {
+				var regExp = new RegExp(this.providers[i].urlschemes[j], "i");
 
 				if (url.match(regExp) !== null)
-					return Oembed.providers[i];
+					return this.providers[i];
 			}
 		}
 
