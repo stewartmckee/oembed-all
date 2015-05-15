@@ -13,6 +13,7 @@ var q = require('queried');
 var ajax = require('component-ajax');
 var domify = require('domify');
 var on = require('emmy/on');
+var css = require('mucss/css');
 
 (function () {
     window.oembed = function (elements, url, options, embedAction) {
@@ -45,10 +46,16 @@ var on = require('emmy/on');
             "z0p.de", "zi.ma", "zi.mu", "zipmyurl.com", "zud.me", "zurl.ws", "zz.gd", "zzang.kr", "›.ws", "✩.ws", "✿.ws", "❥.ws", "➔.ws", "➞.ws", "➡.ws", "➨.ws", "➯.ws", "➹.ws", "➽.ws"];
 
         var embedData = q('#jqoembeddata');
-        if (embedData) document.body.appendChild(embedData);
+        if (!embedData) document.body.appendChild(domify('<div id="jqoembeddata"></div>'));
 
-        [].forEach.call(elements, function (element) {
-            var resourceURL = (url && (!url.indexOf('http://') || !url.indexOf('https://'))) ? url : container.attr("href"),
+        if (elements instanceof Element) {
+            embedElement(elements);
+        } else {
+            [].forEach.call(elements, embedElement);
+        }
+
+        function embedElement(element) {
+            var resourceURL = (url && (!url.indexOf('http://') || !url.indexOf('https://'))) ? url : element.getAttribute("href"),
                 provider;
 
             if (embedAction) {
@@ -87,8 +94,10 @@ var on = require('emmy/on');
 
                                 if (provider !== null) {
                                     provider.params = getNormalizedParams(settings[provider.name]) || {};
-                                    provider.maxWidth = settings.maxWidth;
-                                    provider.maxHeight = settings.maxHeight;
+                                    css(provider, {
+                                        maxWidth: settings.maxWidth,
+                                        maxHeight: settings.maxHeight
+                                    });
                                     embedCode(element, resourceURL, provider);
                                 } else {
                                     settings.onProviderNotFound.call(element, resourceURL);
@@ -120,7 +129,7 @@ var on = require('emmy/on');
                 }
             }
             return element;
-        });
+        }
     };
 
     var settings;
@@ -284,14 +293,13 @@ var on = require('emmy/on');
                 code.style.maxWidth = settings.maxWidth || 'auto';
 
                 if (tag == 'embed') {
-                    code.attr('type', embedProvider.embedtag.type || "application/x-shockwave-flash")
-                        .attr('flashvars', externalUrl.replace(embedProvider.templateRegex, flashvars));
+                    code.setAttribute('type', embedProvider.embedtag.type || "application/x-shockwave-flash");
+                    code.setAttribute('flashvars', externalUrl.replace(embedProvider.templateRegex, flashvars));
                 }
 
                 if (tag == 'iframe') {
-                    code.attr('scrolling', embedProvider.embedtag.scrolling || "no")
-                        .attr('frameborder', embedProvider.embedtag.frameborder || "0");
-
+                    code.setAttribute('scrolling', embedProvider.embedtag.scrolling || "no");
+                    code.setAttribute('frameborder', embedProvider.embedtag.frameborder || "0");
                 }
 
                 success({code: code}, externalUrl, container);
@@ -357,7 +365,7 @@ var on = require('emmy/on');
         if (oembedData === null)
             return;
 
-        if (embedMethod === 'auto' && container.attr('href') !== null) {
+        if (embedMethod === 'auto' && container.getAttribute('href') !== null) {
             embedMethod = 'append';
         } else if (embedMethod == 'auto') {
             embedMethod = 'replace';
@@ -371,8 +379,10 @@ var on = require('emmy/on');
                 container.html(oembedData.code);
                 break;
             case "append":
-                container.wrap('<div class="oembedall-container"></div>');
-                var oembedContainer = container.parent();
+                var containerWrap = domify('<div class="oembedall-container"></div>');
+                container.parentNode.appendChild(containerWrap);
+                containerWrap.appendChild(container);
+                var oembedContainer = container.parentNode;
                 if (settings.includeHandle) {
                     var closehide = domify('<span class="oembedall-closehide">&darr;</span>');
                     container.parentNode.insertBefore(closehide, container);
@@ -399,7 +409,7 @@ var on = require('emmy/on');
                  * - works on youtubes and vimeo
                  */
                 if (settings.maxWidth) {
-                    var post_width = oembedContainer.parent().width();
+                    var post_width = oembedContainer.parentNode.clientWidth;
                     if (post_width < settings.maxWidth) {
                         var iframe_width_orig = q('iframe', oembedContainer).clientWidth;
                         var iframe_height_orig = q('iframe', oembedContainer).clientHeight;
@@ -947,21 +957,22 @@ var on = require('emmy/on');
                         var code = domify('<p></p>');
                         if (results['og:video']) {
                             var embed = domify('<embed src="' + results['og:video'] + '"/>');
-                            embed.attr('type', results['og:video:type'] || "application/x-shockwave-flash")
-                                .css('max-height', settings.maxHeight || 'auto')
-                                .css('max-width', settings.maxWidth || 'auto');
+                            embed.setAttribute('type', results['og:video:type'] || "application/x-shockwave-flash");
+                            css(embed, 'max-height', settings.maxHeight || 'auto');
+                            css(embed, 'max-width', settings.maxWidth || 'auto');
                             if (results['og:video:width'])
-                                embed.attr('width', results['og:video:width']);
+                                embed.setAttribute('width', results['og:video:width']);
                             if (results['og:video:height'])
-                                embed.attr('height', results['og:video:height']);
+                                embed.setAttribute('height', results['og:video:height']);
                             code.append(embed);
                         } else if (results['og:image']) {
                             var img = domify('<img src="' + results['og:image'] + '">');
-                            img.css('max-height', settings.maxHeight || 'auto').css('max-width', settings.maxWidth || 'auto');
+                            css(img, 'max-height', settings.maxHeight || 'auto');
+                            css(img, 'max-width', settings.maxWidth || 'auto');
                             if (results['og:image:width'])
-                                img.attr('width', results['og:image:width']);
+                                img.setAttribute('width', results['og:image:width']);
                             if (results['og:image:height'])
-                                img.attr('height', results['og:image:height']);
+                                img.setAttribute('height', results['og:image:height']);
                             code.append(img);
                         }
 
