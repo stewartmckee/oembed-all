@@ -51,9 +51,8 @@ function Oembed(elements, url, options, embedAction) {
 		embedAction: embedAction
 	});
 
-	//append element it there's no one
-	var embedData = q('#jqoembeddata');
-	if (!embedData) document.body.appendChild(domify('<div id="jqoembeddata"></div>'));
+	//the instance's data storage element
+	this.data = {};
 
 	//single/multiple element check
 	if (elements instanceof Element) {
@@ -269,8 +268,8 @@ extend(Oembed.prototype, {
 
 		var self = this;
 
-		if (q('#jqoembeddata').getAttribute('data-external-url') && embedProvider.embedtag.tag != 'iframe') {
-			var oembedData = {code: q('#jqoembeddata').getAttribute('data-external-url')};
+		if (self.data['data-external-url'] && embedProvider.embedtag.tag != 'iframe') {
+			var oembedData = {code: self.data['data-external-url']};
 			self.success(oembedData, externalUrl, container);
 		} else if (embedProvider.yql) {
 			var from = embedProvider.yql.from || 'htmlstring';
@@ -421,7 +420,7 @@ extend(Oembed.prototype, {
 	},
 
 	success: function(oembedData, externalUrl, container) {
-		q('#jqoembeddata').setAttribute('data-external-url', oembedData.code);
+		this.data['data-external-url'] = oembedData.code;
 		this.settings.beforeEmbed.call(container, oembedData);
 		this.settings.onEmbed.call(container, oembedData);
 		this.settings.afterEmbed.call(container, oembedData);
