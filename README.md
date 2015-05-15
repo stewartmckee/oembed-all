@@ -1,7 +1,7 @@
-Jquery-Oembed-All
+Oembed-Js
 =================
 
-This is a fork (with a lot of changes) of the jquery-oembed located at http://code.google.com/p/jquery-oembed/.
+This is a jQuery-less, CommonJS fork of [jquery-oembed-all project](https://github.com/nfl/jquery-oembed-all).
 
 Instead of using oohembed or other such services it tries to embed the object natively without having to use some kind of local server.
 This project will happily use native oembed services when it can, however it also use other types of embedding whenever oembed is not possible.
@@ -22,11 +22,16 @@ This project tries to use embedding techniques in the following order of prefere
 
 Quick Start
 -----------
-Add this to your javascript file.
+
+You can connect it using Browserify:
 ````
-$(function(){
-   $("a.embed").oembed();
-});
+var Oembed = require('oembed-js');
+````
+or connect oembed-build.js and write the same thing to get the function.
+Then you can call it like that:
+````
+var link = document.querySelector('a.embed');
+new Oembed(link);
 ````
 
 Add `class="embed"` to anchor tag which contains the URL you wish to embed.  
@@ -46,10 +51,10 @@ to use...
 2. options
 
 ````
-$(".oembed").oembed(null,{
+new Oembed(link, null,{
     embedMethod: 'auto',	// "auto", "append", "fill"	
     apikeys: {
-      amazon : '<your amazon key>',
+        amazon : '<your amazon key>',
     }
 });
 ````
@@ -62,7 +67,7 @@ to try to embed information using the OG protocol.
 The fallback can be disabled using {fallback:false} setting.
 
 ````
-$(".oembed").oembed(null,{
+new Oembed(link, null,{
         fallback : false
     }
 });

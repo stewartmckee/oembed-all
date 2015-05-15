@@ -1,4 +1,4 @@
-var OEmbedProvider = require('../oembed-provider.js');
+var OEmbedProvider = require('../provider.js');
 
 /* Native & common providers */
 var providers = [

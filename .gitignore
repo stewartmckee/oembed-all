@@ -1,6 +1,5 @@
 # Created by .gitignore support plugin (hsz.mobi)
 *.iml
 node_modules
-build.js
 npm-debug.log
 .DS_Store

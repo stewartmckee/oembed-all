@@ -1,13 +1,13 @@
 {
-  "name": "oembed-all",
+  "name": "oembed-js",
   "version": "1.0.0",
-  "description": "Oembed-All =================",
-  "main": "oembed.js",
+  "description": "CommonJS package helping embed info about web pages",
+  "main": "index.js",
   "directories": {
     "example": "examples"
   },
   "scripts": {
-    "build": "browserify -r ./oembed.js:oembed -o build.js",
+    "build": "browserify -r ./index.js:oembed-js -o oembed-build.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
