@@ -27,6 +27,7 @@
     "emmy": "^5.2.5",
     "mucss": "^0.6.2",
     "queried": "^1.4.1",
+    "randomstring": "^1.0.5",
     "xtend": "^4.0.0"
   },
   "devDependencies": {
