@@ -5,6 +5,8 @@
 	<script type="text/javascript" src="../build.js"></script>
 	<script>
 		$(document).ready(function () {
+			var Oembed = require('oembed');
+
 			$('#info').keyup(function(){
 				tagdata = [];
 				eventdata = [];
@@ -16,7 +18,7 @@
 				
 				$('#out').empty().html(text);
 				
-				oembed(document.querySelector(".oembed"), null,{
+				new Oembed(document.querySelector(".oembed"), null,{
 					apikeys: {
 						//etsy : 'd0jq4lmfi5bjbrxq2etulmjr',
 						amazon : 'caterwall-20',

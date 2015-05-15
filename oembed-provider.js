@@ -49,3 +49,5 @@ function OEmbedProvider(name, type, urlschemesarray, apiendpoint, extraSettings)
 	this.callbackparameter = this.callbackparameter || "callback";
 	this.embedtag = this.embedtag || {tag: ""};
 }
+
+module.exports = OEmbedProvider;
