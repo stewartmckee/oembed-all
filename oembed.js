@@ -293,6 +293,7 @@ String.prototype.md5=function(){
                 var code = domify('<' + tag + 
                     ' src="' + src + 
                     '" width="'+ width +
+                    '" height="'+ height +
                     '" allowfullscreen="' + (embedProvider.embedtag.allowfullscreen || 'true')  + 
                     '" allowscriptaccess="' + (embedProvider.embedtag.allowfullscreen || 'always') + '"/>')
                 code.style.maxHeight = settings.maxHeight || 'auto';
