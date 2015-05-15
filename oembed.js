@@ -1,8 +1,8 @@
 /*!
  * OEembed Plugin
  *
- * Copyright (c) 2009 Richard Chamorro
- * Licensed under the MIT license
+ * Copyright (c) 2015 KudaGo
+ * MIT license
  * 
  * Orignal Author: Richard Chamorro 
  * Forked by Kudago to make it jQuery-less
