@@ -1,6 +1,6 @@
 {
   "name": "oembed-js",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "CommonJS package helping embed info about web pages",
   "main": "index.js",
   "directories": {
@@ -12,14 +12,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/kudago/jquery-oembed-all.git"
+    "url": "https://github.com/kudago/oembed-js.git"
   },
   "author": "everyonesdesign <tr.yura@yahoo.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/kudago/jquery-oembed-all/issues"
+    "url": "https://github.com/kudago/oembed-js/issues"
   },
-  "homepage": "https://github.com/kudago/jquery-oembed-all",
+  "homepage": "https://github.com/kudago/oembed-js",
   "dependencies": {
     "MD5": "^1.2.1",
     "component-ajax": "0.0.2",
