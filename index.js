@@ -21,7 +21,7 @@ var randomstring = require('randomstring');
 
 //This is needed for gravatar :(
 String.prototype.md5=function(){
-	return MD5(this);
+	return md5(this);
 };
 
 function Oembed(elements, url, options, embedAction) {
