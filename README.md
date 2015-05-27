@@ -1,6 +1,8 @@
-# Oembed-all [![Build Status](https://travis-ci.org/kudago/oembed-all.svg?branch=master)](https://travis-ci.org/kudago/oembed-all) [![Code Climate](https://codeclimate.com/github/kudago/oembed-all/badges/gpa.svg)](https://codeclimate.com/github/kudago/oembed-all)
+# Oembed-all
 
 CommonJS fork of [jquery-oembed-all](https://github.com/nfl/jquery-oembed-all, jquery-less.
+
+[![unstable](http://badges.github.io/stability-badges/dist/unstable.svg)](http://github.com/badges/stability-badges)
 
 ```
 $ npm install --save oembed-all
@@ -361,6 +363,7 @@ Current 3rd party sources include:
 
 #### TODO:
 
+* Separate providers by files to include separately
 * delicious
 * digg?
 * picasa
