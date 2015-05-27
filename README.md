@@ -1,8 +1,7 @@
-# Oembed-all
+# Oembed-all [![unstable](http://badges.github.io/stability-badges/dist/unstable.svg)](http://github.com/badges/stability-badges)
 
-CommonJS fork of [jquery-oembed-all](https://github.com/nfl/jquery-oembed-all, jquery-less.
+CommonJS fork of [jquery-oembed-all](https://github.com/nfl/jquery-oembed-all), jquery-less.
 
-[![unstable](http://badges.github.io/stability-badges/dist/unstable.svg)](http://github.com/badges/stability-badges)
 
 ```
 $ npm install --save oembed-all
