@@ -1,39 +1,42 @@
-<html>
-<head>
-	<link rel="stylesheet" type="text/css" href="../oembed.css"> 
-	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>
-	<script type="text/javascript" src="../oembed-build.js"></script>
-	<script>
-		$(document).ready(function () {
-			var Oembed = require('oembed-js');
+<!doctype html>
+<link rel="stylesheet" type="text/css" href="../oembed.css">
 
-			$('#info').keyup(function(){
-				tagdata = [];
-				eventdata = [];
-				var scriptruns = [];
-				var text = $('#info').val();
-				text = $('<span>'+text+'</span>').text(); //strip html
-				text = text.replace(/(\s|>|^)(https?:[^\s<]*)/igm,'$1<div><a href="$2" class="oembed">$2</a></div>');
-				text = text.replace(/(\s|>|^)(mailto:[^\s<]*)/igm,'$1<div><a href="$2" class="oembed">$2</a></div>');
-				
-				$('#out').empty().html(text);
-				
-				new Oembed(document.querySelectorAll('.oembed'), null,{
-					apikeys: {
-						//etsy : 'd0jq4lmfi5bjbrxq2etulmjr',
-						amazon : 'caterwall-20',
-						//eventbrite: 'SKOFRBQRGNQW5VAS6P',
-					},
-					//maxHeight: 200, maxWidth:300
-				});
-				
-			}); 
+<ul>
+<li></li>
+</ul>
+
+<script type="text/javascript" src="../oembed.js"></script>
+<textarea id="info" style="width:80%; margin-right:auto; margin-left: auto; height:200px;"></textarea>
+<hr/>
+<div id="out"></div>
+
+<script>
+	var Oembed = Oembed || require('oembed-all');
+
+	var infoEl = document.querySelector('#info');
+	var fakeDiv = document.createElement('div');
+
+	infoEl.addEventListener('keyup', function () {
+		tagdata = [];
+		eventdata = [];
+		var scriptruns = [];
+		var text = infoEl.value;
+		//strip html
+		fakeDiv.innerHTML = text;
+		text = fakeDiv.textContent;
+		text = text.replace(/(\s|>|^)(https?:[^\s<]*)/igm,'$1<div><a href="$2" class="oembed">$2</a></div>');
+		text = text.replace(/(\s|>|^)(mailto:[^\s<]*)/igm,'$1<div><a href="$2" class="oembed">$2</a></div>');
+
+		document.querySelector('#out').innerHTML = text;
+
+		new Oembed(document.querySelectorAll('.oembed'), {
+			apikeys: {
+				//etsy : 'd0jq4lmfi5bjbrxq2etulmjr',
+				amazon : 'caterwall-20',
+				//eventbrite: 'SKOFRBQRGNQW5VAS6P',
+			},
+			//maxHeight: 200, maxWidth:300
 		});
-	</script>
-</head>
-<body>
-	<textarea id="info" style="width:80%; margin-right:auto; margin-left: auto; height:200px;"></textarea>
-	<hr/>
-	<div id="out"></div>
-</body>
-</html>
+
+	});
+</script>

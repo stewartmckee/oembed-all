@@ -1,4 +1,4 @@
-module.exports = [
+[
 	"0rz.tw",
 	"1link.in",
 	"1url.com",
@@ -58,7 +58,7 @@ module.exports = [
 	"decenturl.com",
 	"dfl8.me",
 	"digbig.com",
-	"http:\/\/digg\.com\/[^\/]+$",
+	"http:\/\/digg\\.com\/[^\/]+$",
 	"disq.us",
 	"dld.bz",
 	"dlvr.it",
@@ -341,4 +341,4 @@ module.exports = [
 	"➯.ws",
 	"➹.ws",
 	"➽.ws"
-];
+]

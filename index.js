@@ -1,31 +1,28 @@
-/*!
+/**
  * OEembed Plugin
  *
  * Copyright (c) 2015 KudaGo
  * MIT license
- * 
- * Orignal Author: Richard Chamorro 
+ *
+ * Orignal Author: Richard Chamorro
  * Forked by Kudago to make it jQuery-less
  */
 
 var extend = require('xtend/mutable');
-var q = require('queried');
 var ajax = require('component-ajax');
 var domify = require('domify');
-var on = require('emmy/on');
-var css = require('mucss/css');
-var md5 = require('MD5');
-var shortURLList = require('./data/url-list');
-var providers = require('./data/providers');
+var shortURLList = require('./lib/url-list');
+var providers = require('./lib/providers');
 var randomstring = require('randomstring');
 
-//This is needed for gravatar :(
-String.prototype.md5=function(){
-	return md5(this);
-};
 
-function Oembed(elements, url, options, embedAction) {
-
+/**
+ * @constructor
+ *
+ * @param {Element} elements An element to init oembed on
+ * @param {Object} options [description]
+ */
+function Oembed(elements, options) {
 	var defaults = {
 		fallback: true,
 		maxWidth: null,
@@ -33,20 +30,17 @@ function Oembed(elements, url, options, embedAction) {
 		includeHandle: true,
 		embedMethod: 'auto',
 		// "auto", "append", "fill"
-		onProviderNotFound: function() {},
-		beforeEmbed: function() {},
-		afterEmbed: function() {},
+		onProviderNotFound: function () {},
+		beforeEmbed: function () {},
+		afterEmbed: function () {},
 		onEmbed: false,
-		onError: function(a, b, c, d) {
-			console.log('err:', a, b, c, d)
+		onError: function (a, b, c, d) {
+			console.log('err:', a, b, c, d);
 		},
 		ajaxOptions: {}
 	};
 
-	this.settings = extend(defaults, options, {
-		url: url,
-		embedAction: embedAction
-	});
+	this.settings = extend(defaults, options);
 
 	//the instance's data storage element
 	this.data = {};
@@ -57,14 +51,14 @@ function Oembed(elements, url, options, embedAction) {
 	} else {
 		[].forEach.call(elements, this.embedElement.bind(this));
 	}
+}
 
-};
 
 extend(Oembed.prototype, {
 
 	providers: providers,
 
-	embedElement: function(element) {
+	embedElement: function (element) {
 		var self = this;
 
 		var resourceURL = (self.url && (!self.url.indexOf('http://') || !self.url.indexOf('https://'))) ? self.url : element.getAttribute("href"),
@@ -73,7 +67,7 @@ extend(Oembed.prototype, {
 		if (self.embedAction) {
 			self.settings.onEmbed = self.embedAction;
 		} else if (!self.settings.onEmbed) {
-			self.settings.onEmbed = function(oembedData) {
+			self.settings.onEmbed = function (oembedData) {
 				self.insertCode(element, self.settings.embedMethod, oembedData);
 			};
 		}
@@ -93,7 +87,7 @@ extend(Oembed.prototype, {
 							format: "json"
 							//callback: "?"
 						},
-						success: function(data) {
+						success: function (data) {
 							resourceURL = data['long-url'];
 							provider = self.getOEmbedProvider(data['long-url']);
 
@@ -104,16 +98,14 @@ extend(Oembed.prototype, {
 
 							if (provider !== null) {
 								provider.params = self.getNormalizedParams(self.settings[provider.name]) || {};
-								css(provider, {
-									maxWidth: self.settings.maxWidth,
-									maxHeight: self.settings.maxHeight
-								});
+								provider.style.maxWidth = self.settings.maxWidth + 'px';
+								provider.style.maxHeight = self.settings.maxHeight + 'px';
 								self.embedCode(element, resourceURL, provider);
 							} else {
 								self.settings.onProviderNotFound.call(element, resourceURL);
 							}
 						},
-						error: function() {
+						error: function () {
 							self.settings.onError.call(element, resourceURL)
 						}
 					}, self.settings.ajaxOptions || {});
@@ -141,7 +133,7 @@ extend(Oembed.prototype, {
 		return element;
 	},
 
-	insertCode: function(container, embedMethod, oembedData) {
+	insertCode: function (container, embedMethod, oembedData) {
 		var self = this;
 
 		if (oembedData === null)
@@ -178,7 +170,7 @@ extend(Oembed.prototype, {
 				if (self.settings.includeHandle) {
 					var closehide = domify('<span class="oembedall-closehide">&darr;</span>');
 					container.parentNode.insertBefore(closehide, container);
-					on(closehide, 'click', function() {
+					closehide.addEventListener('click', function () {
 						var encodedString = encodeURIComponent(closehide.innerHTML);
 						closehide.innerHTML = encodedString == '%E2%86%91' ? '&darr;' : '&uarr;';
 						var lastSibling = closehide.parentNode.lastChild;
@@ -203,17 +195,17 @@ extend(Oembed.prototype, {
 				if (self.settings.maxWidth) {
 					var post_width = oembedContainer.parentNode.clientWidth;
 					if (post_width < self.settings.maxWidth) {
-						var iframe_width_orig = q('iframe', oembedContainer).clientWidth;
-						var iframe_height_orig = q('iframe', oembedContainer).clientHeight;
+						var iframe_width_orig = oembedContainer.querySelector('iframe').clientWidth;
+						var iframe_height_orig = oembedContainer.querySelector('iframe').clientHeight;
 						var ratio = iframe_width_orig / post_width;
-						q('iframe', oembedContainer).clientWidth = frame_width_orig / ratio;
-						q('iframe', oembedContainer).clientHeight = iframe_height_orig / ratio;
+						oembedContainer.querySelector('iframe').clientWidth = frame_width_orig / ratio;
+						oembedContainer.querySelector('iframe').clientHeight = iframe_height_orig / ratio;
 					} else {
 						if (self.settings.maxWidth) {
-							q('iframe', oembedContainer).clientWidth = self.settings.maxWidth;
+							oembedContainer.querySelector('iframe').clientWidth = self.settings.maxWidth;
 						}
 						if (self.settings.maxHeight) {
-							q('iframe', oembedContainer).clientHeight = self.settings.maxHeight;
+							oembedContainer.querySelector('iframe').clientHeight = self.settings.maxHeight;
 						}
 					}
 				}
@@ -221,7 +213,7 @@ extend(Oembed.prototype, {
 		}
 	},
 
-	getPhotoCode: function(url, oembedData) {
+	getPhotoCode: function (url, oembedData) {
 		var code;
 		var alt = oembedData.title ? oembedData.title : '';
 		alt += oembedData.author_name ? ' - ' + oembedData.author_name : '';
@@ -243,11 +235,11 @@ extend(Oembed.prototype, {
 		return code;
 	},
 
-	getRichCode: function(url, oembedData) {
+	getRichCode: function (url, oembedData) {
 		return oembedData.html;
 	},
 
-	getGenericCode: function(url, oembedData) {
+	getGenericCode: function (url, oembedData) {
 		var title = ((oembedData.title) && (oembedData.title !== null)) ? oembedData.title : url;
 		var code = '<a href="' + url + '">' + title + '</a>';
 
@@ -258,7 +250,7 @@ extend(Oembed.prototype, {
 		return code;
 	},
 
-	getOEmbedProvider: function(url) {
+	getOEmbedProvider: function (url) {
 		for (var i = 0; i < this.providers.length; i++) {
 			for (var j = 0, l = this.providers[i].urlschemes.length; j < l; j++) {
 				var regExp = new RegExp(this.providers[i].urlschemes[j], "i");
@@ -271,7 +263,7 @@ extend(Oembed.prototype, {
 		return null;
 	},
 
-	embedCode: function(container, externalUrl, embedProvider) {
+	embedCode: function (container, externalUrl, embedProvider) {
 
 		var self = this;
 
@@ -295,7 +287,7 @@ extend(Oembed.prototype, {
 					env: 'store://datatables.org/alltableswithkeys',
 					callback: "?"
 				},
-				success: function(data) {
+				success: function (data) {
 					var result;
 
 					if (embedProvider.yql.xpath && embedProvider.yql.xpath == '//meta|//title|//link') {
@@ -358,11 +350,11 @@ extend(Oembed.prototype, {
 					src = src.replace('_APIKEY_', self.settings.apikeys[embedProvider.name]);
 				}
 
-				var code = domify('<' + tag + 
-					' src="' + src + 
+				var code = domify('<' + tag +
+					' src="' + src +
 					'" width="'+ width +
 					'" height="'+ height +
-					'" allowfullscreen="' + (embedProvider.embedtag.allowfullscreen || 'true')  + 
+					'" allowfullscreen="' + (embedProvider.embedtag.allowfullscreen || 'true')  +
 					'" allowscriptaccess="' + (embedProvider.embedtag.allowfullscreen || 'always') + '"/>')
 				code.style.maxHeight = self.settings.maxHeight || 'auto';
 				code.style.maxWidth = self.settings.maxWidth || 'auto';
@@ -386,7 +378,7 @@ extend(Oembed.prototype, {
 				ajaxopts = extend({
 					url: externalUrl.replace(embedProvider.templateRegex, embedProvider.apiendpoint),
 					dataType: 'jsonp',
-					success: function(data) {
+					success: function (data) {
 						var oembedData = extend({}, data);
 						oembedData.code = embedProvider.templateData(data);
 						self.success(oembedData, externalUrl, container);
@@ -403,7 +395,7 @@ extend(Oembed.prototype, {
 			ajaxopts = extend({
 				url: requestUrl,
 				dataType: embedProvider.dataType || 'jsonp',
-				success: function(data) {
+				success: function (data) {
 					var oembedData = extend({}, data);
 					switch (oembedData.type) {
 						case "file": //Deviant Art has this
@@ -426,14 +418,14 @@ extend(Oembed.prototype, {
 		};
 	},
 
-	success: function(oembedData, externalUrl, container) {
+	success: function (oembedData, externalUrl, container) {
 		this.data['data-external-url'] = oembedData.code;
 		this.settings.beforeEmbed.call(container, oembedData);
 		this.settings.onEmbed.call(container, oembedData);
 		this.settings.afterEmbed.call(container, oembedData);
 	},
 
-	getRequestUrl: function(provider, externalUrl) {
+	getRequestUrl: function (provider, externalUrl) {
 		var url = provider.apiendpoint,
 			qs = "",
 			i;
@@ -465,7 +457,7 @@ extend(Oembed.prototype, {
 		return url;
 	},
 
-	getNormalizedParams: function(params) {
+	getNormalizedParams: function (params) {
 		if (params === null) return null;
 		var key, normalizedParams = {};
 		for (key in params) {

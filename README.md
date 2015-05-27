@@ -1,88 +1,65 @@
-Oembed-Js
-=================
+# Oembed-all [![Build Status](https://travis-ci.org/kudago/oembed-all.svg?branch=master)](https://travis-ci.org/kudago/oembed-all) [![Code Climate](https://codeclimate.com/github/kudago/oembed-all/badges/gpa.svg)](https://codeclimate.com/github/kudago/oembed-all)
 
-This is a jQuery-less, CommonJS fork of [jquery-oembed-all project](https://github.com/nfl/jquery-oembed-all).
+CommonJS fork of [jquery-oembed-all](https://github.com/nfl/jquery-oembed-all, jquery-less.
 
-Instead of using oohembed or other such services it tries to embed the object natively without having to use some kind of local server.
-This project will happily use native oembed services when it can, however it also use other types of embedding whenever oembed is not possible.
+```
+$ npm install --save oembed-all
+```
 
-Using the Open Graph protocol (http://ogp.me/) over Yahoo's YQL (http://developer.yahoo.com/yql/), as a fallback, will display some kind of information for a lot of pages.
-Sites like TED, Ifixit, Ars Technica, twitpic can use this service. However some sites like bandcamp stop YQL from working because of their robots.txt file.
-Over time I'll be removing the some providers that have been hardcoded and using OGP instead to provide a standard embed layout and reduce the file size.
+```js
+var Oembed = require('oembed-all');
+```
 
-This project tries to use embedding techniques in the following order of preference:
-
-* oEmbed - JSONP available - e.g.  flickr, meetup etc
-* embedding (IFRAME/Object) based on URL information - e.g.  youtube
-* oEmbed - JSONP not Available - use YQL to correct - e.g. Ustream, viddler
-* OGP over YQL - used as a fall back. 
-* YQL Screenscape to get embedding details
-* YQL Screenscrape - e.g. pastie
-* JSONP Api lookups Source - With HTML and CSS built in this project - e.g. github, Myspace, Facebook
-
-Quick Start
------------
-
-You can connect it using Browserify:
-
-````
-npm install oembed-js --save
-````
-
-````
-var Oembed = require('oembed-js');
-````
-
-or connect `oembed-build.js` and write the same thing to get the function.
+or connect `oembed.js` and write the same thing to get the function.
 Then you can call it like that:
 
-````
-var link = document.querySelector('a.embed');
-new Oembed(link);
-````
+```html
+<a href="http://www.youtube.com/watch?v=8mwKq7_JlS8" class="embed"></a>
 
-Add `class="embed"` to anchor tag which contains the URL you wish to embed.  
-Ex: `<a href="http://www.youtube.com/watch?v=8mwKq7_JlS8" class="embed"></a>`
+<script>
+  var link = document.querySelector('a.embed');
+  var oembed = new Oembed(link, options);
+</script>
+```
 
-Shortened Urls
-------------
-This project now handles shortened url's using the JSONP service from http://longurl.org. e.g. http://bit.ly/oP77mm will first lengthen the URL 
+## Shortened Urls
+
+This project now handles shortened url's using the JSONP service from http://longurl.org. e.g. http://bit.ly/oP77mm will first lengthen the URL
 to http://tinychat.com/omginternetparty and then embed as normal. This is experimental - so let me know of problems!
 
 to use...
-````
+```
 <a href="https://github.com/starfishmod/jquery-oembed-all" class="oembed">https://github.com/starfishmod/jquery-oembed-all</a>
-````
+```
 
-1. url 
+1. url
 2. options
 
-````
-new Oembed(link, null,{
-    embedMethod: 'auto',	// "auto", "append", "fill"	
+```js
+new Oembed(link, {
+    embedMethod: 'auto',	// "auto", "append", "fill"
     apikeys: {
         amazon : '<your amazon key>',
     }
 });
-````
+```
 
-Fallback to Open Graph 
-------------
-If no providers are found, the fallback (opengraph) provider will scrap the intended website using YQL
-to try to embed information using the OG protocol. 
+## Fallback to Open Graph
+
+If no providers are found, the fallback (opengraph) provider will scrap the intended website using YQL to try to embed information using the OG protocol.
 
 The fallback can be disabled using {fallback:false} setting.
 
-````
-new Oembed(link, null,{
+```js
+new Oembed(link, {
         fallback : false
     }
 });
-````
+```
 
 Current 3rd party sources include:
----------------------------------
-####Video
+
+#### Video
 
 * Youtube - oembed - YQL
   http://www.youtube.com/watch?v=oHg5SJYRHA0
@@ -117,7 +94,7 @@ Current 3rd party sources include:
 * ustream.tv - oEmbed is not JSONP enabled - using YQL to translate it
   http://www.ustream.tv/recorded/20144582
 * viddler - OGP
-  http://www.viddler.com/v/4a7e233c 
+  http://www.viddler.com/v/4a7e233c
 * twitvid - Embedded
 * bambuser - Embedded
 * xtranormal - Embedded
@@ -174,8 +151,8 @@ Current 3rd party sources include:
   http://worldstarhiphop.com/
 * Zapiks - template regex
   http://www.zapiks.fr/
-  
-####Audio 
+
+#### Audio
 
 * Soundcloud - oEmbed
 * HuffDuffer - oEmbed
@@ -190,7 +167,7 @@ Current 3rd party sources include:
 * official.fm - YQL and oembed
 * mixcloud - YQL and oembed
 * shoudio - oembed
-* audioboo.fm - OGP 
+* audioboo.fm - OGP
   http://audioboo.fm/boos/710079-geofencing-and-the-future
 * Spotify - Oembed
   http://open.spotify.com/album/1YwzJz7CrV9fd9Qeb6oo1d
@@ -224,7 +201,7 @@ Current 3rd party sources include:
 * skitch - YQL oembed
   http://skitch.com/sethferreira/nmbr8/the-kings-new-toy
 * graphic.ly  - OGP
-  http://graphicly.com/eldritch/eldritch/2  
+  http://graphicly.com/eldritch/eldritch/2
 * dribble - jsonp lookup
   http://dribbble.com/shots/464661-Rebounding-Station-Shot
 * Lockerz - YQL lookup
@@ -241,7 +218,7 @@ Current 3rd party sources include:
   http://advanced.aviary.com/artists/jas7229/creations/glowing_orb
 * lomography - ogp
   http://www.lomography.com/photos/cameras/3334141-lomo-lc-wide/popular/14660387
-* weheartit - ogp 
+* weheartit - ogp
   http://weheartit.com/entry/26832936
 * glogster - ogp
   http://www.glogster.com/lacocom/glog/g-6m025lt047et8od1f3iona0
@@ -258,7 +235,7 @@ Current 3rd party sources include:
 * Giflike - template regex
   http://giflike.com
 
-####Rich
+#### Rich
 
 * Meetup - oEmbed
 * gigapans - Embedded
@@ -269,7 +246,7 @@ Current 3rd party sources include:
 * tumblr- JSONP lookup
 * imdb - JSONP lookup via imdbapi.com
 * wikipedia- JSONP lookup
-* github- JSONP lookup (CSS) 
+* github- JSONP lookup (CSS)
   https://github.com/starfishmod/jquery-oembed-all
 * eventful - OGP
   http://eventful.com/brisbane/venues/rna-showgrounds-/V0-001-000481663-9
@@ -340,7 +317,7 @@ Current 3rd party sources include:
   http://tinychat.com/omginternetparty
 * tourwrist - embedded
   http://tourwrist.com/tours/27406
-* bnter - OGP  
+* bnter - OGP
   https://banters.com/p/55840
 * bigthink - OGP
   http://bigthink.com/series/43542
@@ -381,9 +358,8 @@ Current 3rd party sources include:
 * Ponga - template regex
   http://ponga.com/
 
----
 
-####TODO:
+#### TODO:
 
 * delicious
 * digg?
@@ -400,3 +376,6 @@ Current 3rd party sources include:
 * http://infogr.am/british-council/burma/
 
 Plus a lot more :) Feel free to submit
+
+
+[![NPM](https://nodei.co/npm/oembed-all.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/oembed-all/)
