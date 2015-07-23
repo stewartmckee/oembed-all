@@ -13,7 +13,7 @@ var ajax = require('component-ajax');
 var domify = require('domify');
 var shortURLList = require('./lib/url-list');
 var providers = require('./lib/providers');
-var randomstring = require('randomstring');
+var randomString = require('random-string');
 
 
 /**
@@ -343,7 +343,7 @@ extend(Oembed.prototype, {
 				var src = externalUrl.replace(embedProvider.templateRegex, embedProvider.apiendpoint);
 
 				if (!embedProvider.nocache) {
-					src += '&jqoemcache=' + randomstring.generate(5);
+					src += '&jqoemcache=' + randomString({length: 5});
 				}
 
 				if (embedProvider.apikey) {
