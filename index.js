@@ -60,9 +60,8 @@ extend(Oembed.prototype, {
 
 	embedElement: function (element) {
 		var self = this;
-
-		var resourceURL = (self.url && (!self.url.indexOf('http://') || !self.url.indexOf('https://'))) ? self.url : element.getAttribute("href"),
-			provider;
+		var resourceURL = self.settings.url ? self.settings.url : element.getAttribute("href");
+		var provider;
 
 		if (self.embedAction) {
 			self.settings.onEmbed = self.embedAction;
